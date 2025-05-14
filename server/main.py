@@ -3,6 +3,7 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from urllib.parse import urlencode
 import httpx
 import os
+import uvicorn
 
 from dotenv import load_dotenv
 import requests
@@ -117,3 +118,21 @@ async def get_lyrics(artist: str, track: str, ACCESS_TOKEN: str = None):
     print(lyrics_data)
     
     return lyrics_data["syncedLyrics"]
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        port=8000,
+        reload=True,
+        reload_dirs=[os.path.dirname(os.path.abspath(__file__))],
+        reload_excludes=[
+            "*/.git/*",
+            "*/__pycache__/*",
+            "*.pyc",
+            "*/.pytest_cache/*",
+            "*/.vscode/*",
+            "*/.idea/*"
+        ],
+        reload_delay=1,
+        reload_includes=["*.py", "*.html", "*.css", "*.js"]
+    )
